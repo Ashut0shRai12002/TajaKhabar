@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="App.StartTheme.Theme" parent="Theme.TajaKhabar">
+        <item name="android:windowSplashScreenBackground">#FFFF</item>
+        <item name="android:windowSplashScreenAnimatedIcon"></item>
+
+    </style>
+</resources>
