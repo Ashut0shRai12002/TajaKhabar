@@ -30,9 +30,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingScreen(modifier: Modifier = Modifier){
+fun OnBoardingScreen(
+    onBoardingEvent: (OnBoardingEvent)-> Unit
+) {
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
         }
@@ -64,7 +66,6 @@ fun OnBoardingScreen(modifier: Modifier = Modifier){
                 selectedPage = pagerState.currentPage
             )
 
-
             val scope = rememberCoroutineScope()
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (buttonState.value[0].isNotEmpty()) {
@@ -78,8 +79,8 @@ fun OnBoardingScreen(modifier: Modifier = Modifier){
                     text = buttonState.value[1],
                     onclick = {
                         scope.launch {
-                            if (pagerState.currentPage == 3) {
-                                //TODO
+                            if (pagerState.currentPage == 2) {
+                                onBoardingEvent(OnBoardingEvent.saveEntryApp)
                             } else {
                                 pagerState.animateScrollToPage(
                                     page = pagerState.currentPage + 1
@@ -89,7 +90,6 @@ fun OnBoardingScreen(modifier: Modifier = Modifier){
                     }
                 )
             }
-
         }
     }
 }
