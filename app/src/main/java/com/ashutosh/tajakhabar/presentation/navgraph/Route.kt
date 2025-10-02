@@ -1,4 +1,4 @@
-package com.ashutosh.tajakhabar.navgraph
+package com.ashutosh.tajakhabar.presentation.navgraph
 
 sealed class Route(
     val route: String
@@ -10,5 +10,5 @@ sealed class Route(
     object DetailsScreen : Route(route = "detailsScreen")
     object AppStartNavigation : Route(route = "appStartNavigation")
     object NewsNavigation : Route(route = "newsNavigation")
-    object NewsNavigationScreen : Route(route = "newNavigationScreen")
+    object NewsNavigatorScreen : Route(route = "newsNavigator")
 }

@@ -5,12 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import com.ashutosh.tajakhabar.navgraph.NavGraph
+import com.ashutosh.tajakhabar.presentation.navgraph.NavGraph
 import com.ashutosh.tajakhabar.ui.theme.TajaKhabarTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +27,15 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().apply {
             setKeepOnScreenCondition(condition = { viewModel.splashCondition.value })
         }
+
         setContent {
+//            val isSystemDarkMode = isSystemInDarkTheme()
+//            val systemController = rememberSystemUiController()
+//            SideEffect {
+//
+//
+//
+//            }
             TajaKhabarTheme(dynamicColor = false) {
                 Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
                     NavGraph(startDestination = viewModel.startDestination.value)

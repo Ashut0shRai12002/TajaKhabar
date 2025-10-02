@@ -2,8 +2,7 @@ package com.ashutosh.tajakhabar.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ashutosh.tajakhabar.domain.usecase.AppEntryUseCases
-import com.ashutosh.tajakhabar.domain.usecase.SaveAppEntryUseCase
+import com.ashutosh.tajakhabar.domain.usecase.app_entry.AppEntryUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

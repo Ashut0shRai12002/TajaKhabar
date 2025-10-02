@@ -1,4 +1,4 @@
-package com.ashutosh.tajakhabar.navgraph
+package com.ashutosh.tajakhabar.presentation.navgraph
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -6,15 +6,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.ashutosh.tajakhabar.presentation.navgraph.newsnavigator.component.NewsNavigator
 import com.ashutosh.tajakhabar.presentation.onboarding.OnBoardingScreen
 import com.ashutosh.tajakhabar.presentation.onboarding.OnBoardingViewModel
-
 @Composable
-fun NavGraph (
-    startDestination : String
-){
-
+fun NavGraph(
+    startDestination: String
+) {
     val navController = rememberNavController()
+
     NavHost(navController = navController, startDestination = startDestination) {
         navigation(
             route = Route.AppStartNavigation.route,
@@ -22,24 +22,16 @@ fun NavGraph (
         ) {
             composable(route = Route.OnBoardingScreen.route) {
                 val viewModel: OnBoardingViewModel = hiltViewModel()
-                OnBoardingScreen(onBoardingEvent = viewModel::onEvent)
+                OnBoardingScreen(onEvent = viewModel::onEvent)
             }
         }
+
         navigation(
             route = Route.NewsNavigation.route,
-            startDestination = Route.HomeScreen.route
+            startDestination = Route.NewsNavigatorScreen.route
         ) {
-            composable(route = Route.HomeScreen.route) {
-
-            }
-            composable(route = Route.SearchScreen.route) {
-
-            }
-            composable(route = Route.BookmarkScreen.route) {
-
-            }
-            composable(route = Route.DetailsScreen.route) {
-
+            composable(route = Route.NewsNavigatorScreen.route){
+                NewsNavigator()
             }
         }
     }

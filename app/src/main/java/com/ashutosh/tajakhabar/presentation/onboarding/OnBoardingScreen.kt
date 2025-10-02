@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -25,62 +26,70 @@ import com.ashutosh.tajakhabar.presentation.common.NewsTextButton
 import com.ashutosh.tajakhabar.presentation.common.PageIndicator
 import com.ashutosh.tajakhabar.presentation.onboarding.components.Dimens
 import com.ashutosh.tajakhabar.presentation.onboarding.components.OnBoarding
+import com.ashutosh.tajakhabar.presentation.onboarding.components.OnBoardingPage
+import com.ashutosh.tajakhabar.presentation.onboarding.components.PagerIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(
-    onBoardingEvent: (OnBoardingEvent)-> Unit
+    onEvent: (OnBoardingEvent) -> Unit
 ) {
-
     Column(modifier = Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
         }
-        val buttonState = remember {
+        val buttonsState = remember {
             derivedStateOf {
                 when (pagerState.currentPage) {
                     0 -> listOf("", "Next")
                     1 -> listOf("Back", "Next")
-                    2 -> listOf("Back", "GetStarted")
+                    2 -> listOf("Back", "Get Started")
                     else -> listOf("", "")
                 }
             }
-
         }
         HorizontalPager(state = pagerState) { index ->
-            OnBoarding(page = pages[index])
+            OnBoardingPage(page = pages[index])
         }
-
+        Spacer(modifier = Modifier.weight(1f))
         Row(
-            modifier = Modifier.fillMaxWidth().padding(Dimens.MediumPadding2)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = Dimens.MediumPadding2)
                 .navigationBarsPadding(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            PageIndicator(
-                pageSize = pages.size,
-                modifier = Modifier.width(Dimens.PageIndicatorWidth),
+            PagerIndicator(
+                modifier = Modifier.width(52.dp),
+                pagesSize = pages.size,
                 selectedPage = pagerState.currentPage
             )
 
-            val scope = rememberCoroutineScope()
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (buttonState.value[0].isNotEmpty()) {
-                    NewsTextButton(text = buttonState.value[0], onclick = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(page = pagerState.currentPage - 1)
-                        }
-                    })
+                val scope = rememberCoroutineScope()
+                //Hide the button when the first element of the list is empty
+                if (buttonsState.value[0].isNotEmpty()) {
+                    NewsTextButton(
+                        text = buttonsState.value[0],
+                        onclick = {
+                            scope.launch {
+                                pagerState.animateScrollToPage(
+                                    page = pagerState.currentPage - 1
+                                )
+                            }
+
+                        },
+                    )
                 }
                 NewsButton(
-                    text = buttonState.value[1],
+                    text = buttonsState.value[1],
                     onclick = {
                         scope.launch {
                             if (pagerState.currentPage == 2) {
-                                onBoardingEvent(OnBoardingEvent.saveEntryApp)
+                                onEvent(OnBoardingEvent.saveEntryApp)
                             } else {
                                 pagerState.animateScrollToPage(
                                     page = pagerState.currentPage + 1
@@ -91,5 +100,6 @@ fun OnBoardingScreen(
                 )
             }
         }
+        Spacer(modifier = Modifier.weight(0.5f))
     }
 }

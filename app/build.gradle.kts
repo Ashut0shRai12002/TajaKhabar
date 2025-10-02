@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.paging.common.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,4 +72,15 @@ dependencies {
 
     //coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    //Paging 3
+    val paging_version = "3.1.1"
+    implementation ("androidx.paging:paging-runtime:$paging_version")
+    implementation ("androidx.paging:paging-compose:3.2.0-rc01")
 }

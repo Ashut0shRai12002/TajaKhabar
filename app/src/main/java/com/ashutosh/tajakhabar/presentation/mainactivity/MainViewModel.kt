@@ -4,8 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ashutosh.tajakhabar.domain.usecase.AppEntryUseCases
-import com.ashutosh.tajakhabar.navgraph.Route
+import com.ashutosh.tajakhabar.domain.usecase.app_entry.AppEntryUseCases
+import com.ashutosh.tajakhabar.presentation.navgraph.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
