@@ -4,14 +4,11 @@ import androidx.paging.PagingData
 import com.ashutosh.tajakhabar.domain.model.Article
 import com.ashutosh.tajakhabar.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.Query
 
-class GetNews(
+class SearchNews(
     private val newsRepository: NewsRepository
 ) {
-    operator fun invoke(source: List<String>): Flow<PagingData<Article>>{
-        return newsRepository.getNews(sources = source)
+    operator fun invoke(searchQuery: String , source: List<String>) : Flow<PagingData<Article>> {
+        return newsRepository.searchNews(searchQuery = searchQuery , sources = source)
     }
-
-
 }

@@ -22,12 +22,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ashutosh.tajakhabar.R
 import com.ashutosh.tajakhabar.presentation.home.HomeViewModel
 import com.ashutosh.tajakhabar.presentation.navgraph.Route
 import com.ashutosh.tajakhabar.presentation.onboarding.HomeScreen
+import com.ashutosh.tajakhabar.presentation.search.SearchScreen
+import com.ashutosh.tajakhabar.presentation.search.SearchViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,6 +95,8 @@ fun NewsNavigator() {
                     navigate = { navigateToTab(navController = navController, route = it) })
             }
             composable(route = Route.SearchScreen.route) {
+                val viewModel: SearchViewModel = hiltViewModel()
+                SearchScreen(state = viewModel.state.value , event =  viewModel::onEvent )
             }
             composable(route = Route.DetailsScreen.route) {
 

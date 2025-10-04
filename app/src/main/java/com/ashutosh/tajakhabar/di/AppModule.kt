@@ -12,6 +12,7 @@ import com.ashutosh.tajakhabar.domain.usecase.app_entry.ReadAppEntryUseCase
 import com.ashutosh.tajakhabar.domain.usecase.app_entry.SaveAppEntryUseCase
 import com.ashutosh.tajakhabar.domain.usecase.news.GetNews
 import com.ashutosh.tajakhabar.domain.usecase.news.GetNewsUseCases
+import com.ashutosh.tajakhabar.domain.usecase.news.SearchNews
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -64,7 +65,8 @@ object AppModule {
         newsRepository: NewsRepository
     ) : GetNewsUseCases{
         return GetNewsUseCases(
-            getNews = GetNews(newsRepository)
+            getNews = GetNews(newsRepository),
+            searchNews = SearchNews(newsRepository)
         )
     }
 

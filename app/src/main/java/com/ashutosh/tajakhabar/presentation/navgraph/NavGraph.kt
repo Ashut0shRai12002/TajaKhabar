@@ -34,5 +34,6 @@ fun NavGraph(
                 NewsNavigator()
             }
         }
+
     }
 }
