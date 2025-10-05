@@ -16,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
@@ -26,6 +27,12 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ashutosh.tajakhabar.R
+import com.ashutosh.tajakhabar.domain.model.Article
+import com.ashutosh.tajakhabar.presentation.bookmark.BookMarkState
+import com.ashutosh.tajakhabar.presentation.bookmark.BookmarkScreen
+import com.ashutosh.tajakhabar.presentation.bookmark.BookmarkViewModel
+import com.ashutosh.tajakhabar.presentation.detail.DetailScreen
+import com.ashutosh.tajakhabar.presentation.detail.DetailViewModel
 import com.ashutosh.tajakhabar.presentation.home.HomeViewModel
 import com.ashutosh.tajakhabar.presentation.navgraph.Route
 import com.ashutosh.tajakhabar.presentation.onboarding.HomeScreen
@@ -92,17 +99,59 @@ fun NewsNavigator() {
                 val articles = viewModel.news.collectAsLazyPagingItems()
                 HomeScreen(
                     articles = articles,
-                    navigate = { navigateToTab(navController = navController, route = it) })
+                    navigate = {
+                        navigateToTab(
+                            navController = navController,
+                            route = Route.SearchScreen.route
+                        )
+                    },
+                    navigateToDetails = { article ->
+                        navigateToDetails(
+                            navController = navController,
+                            article = article
+                        )
+                    }
+                )
             }
             composable(route = Route.SearchScreen.route) {
                 val viewModel: SearchViewModel = hiltViewModel()
-                SearchScreen(state = viewModel.state.value , event =  viewModel::onEvent )
+                SearchScreen(state = viewModel.state.value ,
+                    event =  viewModel::onEvent  ,
+                    navigateToDetails = {article ->
+                        navigateToDetails(
+                            navController = navController,
+                            article = article
+                        )
+                    }
+                    )
             }
             composable(route = Route.DetailsScreen.route) {
+                val viewModel: DetailViewModel = hiltViewModel()
+                navController.previousBackStackEntry?.savedStateHandle?.get<Article?>("article")
+                    ?.let { article ->
+                        DetailScreen (
+                            article = article,
+                            event = viewModel::onEvent,
+                            navigateUp = { navController.navigateUp() },
+                            sideEffect = viewModel.sideEffect
+                        )
+                    }
 
             }
             composable(route = Route.BookmarkScreen.route) {
 
+                val viewModel: BookmarkViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                OnBackClickStateSaver(navController = navController)
+                BookmarkScreen(
+                    state = state,
+                    navigateToDetails = { article ->
+                        navigateToDetails(
+                            navController = navController,
+                            article = article
+                        )
+                    }
+                )
             }
         }
     }
@@ -117,5 +166,20 @@ private fun navigateToTab(navController: NavController, route: String) {
         }
         launchSingleTop = true
         restoreState = true
+    }
+}
+private fun navigateToDetails(navController: NavController, article: Article){
+    navController.currentBackStackEntry?.savedStateHandle?.set("article", article)
+    navController.navigate(
+        route = Route.DetailsScreen.route
+    )
+}
+@Composable
+fun OnBackClickStateSaver(navController: NavController) {
+    BackHandler(true) {
+        navigateToTab(
+            navController = navController,
+            route = Route.HomeScreen.route
+        )
     }
 }

@@ -13,12 +13,38 @@ import androidx.paging.compose.LazyPagingItems
 import com.ashutosh.tajakhabar.domain.model.Article
 import com.ashutosh.tajakhabar.presentation.onboarding.EmptyScreen
 import com.ashutosh.tajakhabar.presentation.onboarding.components.Dimens
+import com.ashutosh.tajakhabar.presentation.onboarding.components.Dimens.ExtraSmallPadding2
+import com.ashutosh.tajakhabar.presentation.onboarding.components.Dimens.MediumPadding1
+
+@Composable
+fun ArticlesList(
+    modifier: Modifier = Modifier,
+    articles: List<Article>,
+    onClick:(Article) -> Unit
+) {
+
+
+
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(Dimens.MediumPadding1),
+            contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding2)
+        ) {
+            items(
+                count = articles.size,
+            ) {
+                val articles = articles[it]
+                    ArticleCard(article = articles, onClick = {onClick(articles)})
+                }
+            }
+
+}
 
 @Composable
 fun ArticlesList(
     modifier: Modifier = Modifier,
     articles: LazyPagingItems<Article>,
-    onClick:(Article) -> Unit
+    onClick: (Article) -> Unit
 ) {
 
     val handlePagingResult = handlePagingResult(articles)
@@ -27,19 +53,20 @@ fun ArticlesList(
     if (handlePagingResult) {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Dimens.MediumPadding1),
-            contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding2)
+            verticalArrangement = Arrangement.spacedBy(MediumPadding1),
+            contentPadding = PaddingValues(all = ExtraSmallPadding2)
         ) {
             items(
                 count = articles.itemCount,
             ) {
                 articles[it]?.let { article ->
-                    ArticleCard(article = article, onClick = {onClick(article)})
+                    ArticleCard(article = article, onClick = { onClick(article) })
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun handlePagingResult(articles: LazyPagingItems<Article>): Boolean {
